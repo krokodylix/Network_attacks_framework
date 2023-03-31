@@ -1,0 +1,2 @@
+scapy~=2.4.3
+setuptools~=61.2.0
