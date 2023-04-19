@@ -2,8 +2,11 @@ import logging
 
 from src.auxiliary.hostdiscovery import discoverhosts
 from src.attacks.dhcpstarvation import dhcpstarv
+from src.attacks.bruteforce import bruteforce_ssh
 from cli import args
 from src.config import MESSAGES, logdevicedata, validateaddress, validatemask
+from multiprocessing import Process
+
 
 def run(projargs):
     if args.hd:
@@ -20,4 +23,16 @@ def run(projargs):
 
     if args.ds:
         dhcpstarv()
+        exit()
+
+    if args.bssh:
+        processes = []
+        am = args.t
+        for i in range(am):
+            processes.append(Process(target=bruteforce_ssh, args=(args.sshadr, args.sshp, args.sshuser, args.wordlist, am,i)))
+        for proc in processes:
+            proc.start()
+        for proc in processes:
+            proc.join()
+
 

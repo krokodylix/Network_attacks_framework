@@ -11,6 +11,18 @@ parser.add_argument('-hm', type=int, help='subnetwork mask')
 # DHCP starvation attack
 parser.add_argument('-ds', action='store_true', help='perform dhcp starvation attack')
 
+# BRUTE FORCE SECTION
+
+# ssh brute force
+
+parser.add_argument('-bssh', action='store_true', help='perform ssh brute force')
+parser.add_argument('-sshadr', type=str, help='victim address')
+parser.add_argument('-sshuser', type=str, help='victim username')
+parser.add_argument('-sshp', type=int, help='ssh port')
+parser.add_argument('-wordlist', type=str, help='passwords wordlist')
+
+
+parser.add_argument('-t', type=int, help='threads')
 
 args = parser.parse_args()
 
