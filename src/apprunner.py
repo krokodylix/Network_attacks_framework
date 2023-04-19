@@ -2,17 +2,18 @@ import logging
 
 from src.auxiliary.hostdiscovery import discoverhosts
 from cli import args
-from src.config import MESSAGES, getdevicedata, validateaddress
+from src.config import MESSAGES, logdevicedata, validateaddress, validatemask
 
 def run(projargs):
     if args.hd:
         try:
             ip = projargs["hn"]
             mask = projargs["hm"]
-            validateaddress(ip, mask)
+            validateaddress(ip)
+            validatemask(mask)
             hosts = discoverhosts(ip, mask)
             for host in hosts:
-                getdevicedata(host)
+                logdevicedata(host)
         except:
             logging.error(MESSAGES["arguments_error"])
 

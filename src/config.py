@@ -12,11 +12,13 @@ MESSAGES = {
 
 # Log a success message
 
-def getdevicedata(device):
+def logdevicedata(device):
     logging.info(f"IP: {device['ip']}, MAC: {device['mac']}")
 
 
-def validateaddress(ip, mask):
+def validateaddress(ip):
+    ipaddress.ip_address(ip)
+
+def validatemask(mask):
     if mask <= 0 or mask >=32:
         raise Exception()
-    ipaddress.ip_address(ip)
