@@ -17,9 +17,6 @@ def getdevicedata(device):
 
 
 def validateaddress(ip, mask):
-    try:
-        if mask <= 0 or mask >=32:
-            raise Exception()
-        ipaddress.ip_address(ip)
-    except:
+    if mask <= 0 or mask >=32:
         raise Exception()
+    ipaddress.ip_address(ip)
