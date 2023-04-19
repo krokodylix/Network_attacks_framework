@@ -1,5 +1,6 @@
 import scapy
+import logging
 
 
 def dhcpstarv():
-    print(scapy.VERSION)
+    logging.info(scapy.VERSION)
