@@ -1,4 +1,7 @@
 import logging
+import ipaddress
+
+
 
 # Configure the logging module
 logging.basicConfig(level=logging.INFO, format='[+] %(message)s')
@@ -11,3 +14,12 @@ MESSAGES = {
 
 def getdevicedata(device):
     logging.info(f"IP: {device['ip']}, MAC: {device['mac']}")
+
+
+def validateaddress(ip, mask):
+    try:
+        if mask <= 0 or mask >=32:
+            raise Exception()
+        ipaddress.ip_address(ip)
+    except:
+        raise Exception()
