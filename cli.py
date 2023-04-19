@@ -2,10 +2,14 @@ import argparse
 
 
 parser = argparse.ArgumentParser(description="bot23L, CLI")
+
 # Host discovery parameters
 parser.add_argument('-hd', action='store_true', help='perform hostdiscovry') # main host discovery flag
 parser.add_argument('-hn', type=str, help='network\'s address for host discovery')
 parser.add_argument('-hm', type=int, help='subnetwork mask')
+
+# DHCP starvation attack
+parser.add_argument('-ds', action='store_true', help='perform dhcp starvation attack')
 
 
 args = parser.parse_args()

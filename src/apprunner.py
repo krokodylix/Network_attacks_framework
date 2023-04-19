@@ -1,6 +1,7 @@
 import logging
 
 from src.auxiliary.hostdiscovery import discoverhosts
+from src.attacks.dhcpstarvation import dhcpstarv
 from cli import args
 from src.config import MESSAGES, logdevicedata, validateaddress, validatemask
 
@@ -16,4 +17,7 @@ def run(projargs):
                 logdevicedata(host)
         except:
             logging.error(MESSAGES["arguments_error"])
+
+    if args.ds:
+        dhcpstarv()
 
