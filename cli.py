@@ -21,6 +21,12 @@ parser.add_argument('-sshuser', type=str, help='victim username')
 parser.add_argument('-sshp', type=int, help='ssh port')
 parser.add_argument('-wordlist', type=str, help='passwords wordlist')
 
+#Scanner
+parser.add_argument('-sc', action='store_true', help='perform hostdiscovry') # main host discovery flag
+parser.add_argument('-ip', type=str, help='host address')
+parser.add_argument('-p', type=str, help='ports')
+
+
 
 parser.add_argument('-t', type=int, help='threads')
 

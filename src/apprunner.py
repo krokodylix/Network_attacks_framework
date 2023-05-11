@@ -1,10 +1,12 @@
 import logging
 
 from src.auxiliary.hostdiscovery import discoverhosts
+from src.auxiliary.portscanner import synscan
+from src.auxiliary.portscanner import tcpscan
 from src.attacks.dhcpstarvation import dhcpstarv
 from src.attacks.bruteforce import bruteforce_ssh
 from cli import args
-from src.config import MESSAGES, logdevicedata, validateaddress, validatemask
+from src.config import MESSAGES, logdevicedata, validateaddress, validatemask, porttranslate
 from multiprocessing import Process
 
 
@@ -34,5 +36,12 @@ def run(projargs):
             proc.start()
         for proc in processes:
             proc.join()
+
+
+    if args.sc:
+        ip = projargs["ip"]
+        ports = porttranslate(projargs["p"])
+        openports = tcpscan(ip, ports)
+
 
 

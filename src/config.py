@@ -3,7 +3,6 @@ import ipaddress
 import warnings
 
 
-
 # Configure the logging module
 
 logging.basicConfig(level=logging.INFO, format='[+] %(message)s')
@@ -28,4 +27,36 @@ def validateaddress(ip):
 def validatemask(mask):
     if mask <= 0 or mask >=32:
         raise Exception()
+
+
+def validateport(port):
+    if port >= 0 or port <65535:
+        return port
+    else:
+        raise Exception()
+
+
+def porttranslate(ports):
+    result = []
+    if not ports:
+        for i in range(1, 10000):
+            result.append(i)
+    else:
+        try:
+            separated = ports.split(",")
+            for num in separated:
+                if "-" in num:
+                    y = []
+                    y = num.split("-")
+                    a = validateport(int(min(y)))
+                    b = validateport(int(max(y)))
+                    for i in range(a, b):
+                        result.append(i)
+                else:
+                    result.append(validateport(int(num)))
+        except Exception as e:
+            print(f"Error: {e}")
+
+    return result
+
 
