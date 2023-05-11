@@ -37,6 +37,7 @@ def synscan(targetip,ports):
         print(f"Error: {e}")
 
     return openports
+
 def nullscan():
     print("1")
 
