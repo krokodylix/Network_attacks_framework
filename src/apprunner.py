@@ -41,7 +41,7 @@ def run(projargs):
     if args.sc:
         ip = projargs["ip"]
         ports = porttranslate(projargs["p"])
-        openports = tcpscan(ip, ports)
-
+        openports = synscan(ip, ports)
+        #print("otwarte: " + str(openports))
 
 

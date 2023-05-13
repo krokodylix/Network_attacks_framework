@@ -1,6 +1,9 @@
 from scapy.all import *
 import socket
 
+from scapy.layers.inet import TCP
+
+
 def tcpscan(targetip,ports):
     openports = []
     try:
@@ -23,7 +26,7 @@ def synscan(targetip,ports):
     openports = []
     try:
         p = IP(dst=targetip) / TCP(dport=ports, flags='S')  # Forging SYN packet
-        answers, un_answered = sr(p, timeout=1)  # Send the packets
+        answers, un_answered = sr(p,inter=0.5,retry=2, timeout=1)  # Send the packets
         for req, resp in answers:
             if not resp.haslayer(TCP):
                 continue
@@ -33,6 +36,7 @@ def synscan(targetip,ports):
                 openports.append(port)
             elif tcp_layer.flags == 0x14:
                 print(f"Port {port} is closed on {targetip}")
+        print(answers)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -45,8 +49,13 @@ def nullscan():
 def finscan():
     print("2")
 
-def xmasscan():
-    print("3")
+def xmasscan(targetip,ports):
+    ans, unans = sr(IP(dst=targetip) / TCP(dport=ports, flags="FPU"))
+   
+    if ans and ans.haslayer(TCP) and ans[TCP].flags.R:
+        print("The RST flag is set in the response packet.")
+    else:
+        print("The RST flag is not set in the response packet.")
 
 
 
