@@ -1,7 +1,10 @@
 from scapy.all import *
 import socket
+import logging
+
 
 from scapy.layers.inet import TCP
+from scapy.all import IP, TCP, sr1
 
 
 def tcpscan(targetip,ports):
@@ -12,35 +15,33 @@ def tcpscan(targetip,ports):
         for port in ports:
             result = sock.connect_ex((targetip, port))
             if result == 0:
-                print(f"Port {port} is open on {targetip}")
+                logging.info(f"Port {port} is open on {targetip}")
                 openports.append(port)
             else:
-                print(f"Port {port} is closed on {targetip}")
+                logging.info(f"Port {port} is closed on {targetip}")
         sock.close()
     except Exception as e:
-        print(f"Error: {e}")
+        logging.info(f"Error: {e}")
 
     return openports
 
-def synscan(targetip,ports):
-    openports = []
-    try:
-        p = IP(dst=targetip) / TCP(dport=ports, flags='S')  # Forging SYN packet
-        answers, un_answered = sr(p,inter=0.5,retry=2, timeout=1)  # Send the packets
-        for req, resp in answers:
-            if not resp.haslayer(TCP):
-                continue
-            tcp_layer = resp.getlayer(TCP)
-            if tcp_layer.flags == 0x12:
-                print(f"Port {port} is open on {targetip}")
-                openports.append(port)
-            elif tcp_layer.flags == 0x14:
-                print(f"Port {port} is closed on {targetip}")
-        print(answers)
-    except Exception as e:
-        print(f"Error: {e}")
+from scapy.all import IP, TCP, sr1
 
-    return openports
+def synscan(target_ip, ports):
+    for port in ports:
+        ip_packet = IP(dst=target_ip)
+        tcp_packet = TCP(sport=1234, dport=port, flags="S")
+        packet = ip_packet / tcp_packet
+        response = sr1(packet, timeout=1, verbose=0)
+
+        if response and response.haslayer(TCP):
+            if response[TCP].flags == "SA":
+                logging.info(f"Port {port} is open")
+            elif response[TCP].flags == "RA":
+                logging.info(f"Port {port} is closed")
+        else:
+            logging.exception( "Port {port} is filtered or no response received")
+
 
 def nullscan():
     print("1")

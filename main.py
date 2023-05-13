@@ -10,3 +10,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    #from src.auxiliary.portscanner import synscan
+    #synscan('192.168.189.135',[22,123,80])
