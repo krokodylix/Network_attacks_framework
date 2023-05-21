@@ -25,7 +25,7 @@ def tcpscan(targetip,ports):
 
     return openports
 
-from scapy.all import IP, TCP, sr1
+
 
 def synscan(target_ip, ports):
     for port in ports:
@@ -40,46 +40,43 @@ def synscan(target_ip, ports):
             elif response[TCP].flags == "RA":
                 logging.info(f"Port {port} is closed")
         else:
-            logging.exception( "Port {port} is filtered or no response received")
+            logging.exception(f"Port {port} is filtered or no response received")
 
 
-def nullscan():
-    print("1")
+def nullscan(target_ip, ports):
+    for port in ports:
+        ip_packet = IP(dst=target_ip)
+        tcp_packet = TCP(dport=port, flags="")
+        packet = ip_packet / tcp_packet
+        response = sr1(packet, verbose=False, timeout=5)
+
+        if response is None:
+            logging.info(f"Port {port} on {target_ip} is open or filtered.")
+        elif response.haslayer(TCP):
+            if response.getlayer(TCP).flags == 0x14:
+                logging.info(f"Port {port} on {target_ip} is closed.")
+            elif response.getlayer(TCP).flags == 0x04:
+                logging.info(f"Port {port} on {target_ip} is open.")
+        else:
+            logging.info(f"Port {port} on {target_ip} could not be reached.")
 
 
-def finscan():
-    print("2")
+def finscan(target_ip, ports):
+    for port in ports:
+        ip_packet = IP(dst=target_ip)
+        tcp_packet = TCP(dport=port, flags="F")
+        packet = ip_packet / tcp_packet
+        response = sr1(packet, verbose=False, timeout=5)
 
-def xmasscan(targetip,ports):
-    ans, unans = sr(IP(dst=targetip) / TCP(dport=ports, flags="FPU"))
-   
-    if ans and ans.haslayer(TCP) and ans[TCP].flags.R:
-        print("The RST flag is set in the response packet.")
-    else:
-        print("The RST flag is not set in the response packet.")
-
-
-
-#def scanports(targetip):
-#    request = Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst=targetip)
-#
-#    ans, unans = srp(request, timeout=2, retry=1)
-#    result = []
-#
-#    for sent, received in ans:
-#        result.append({'IP': received.psrc, 'MAC': received.hwsrc})
-#
-#    return result
-#   ans, unans = sr(IP(dst=targetip) / TCP(dport=[0,80,445, 1024], flags="A"), timeout=2)
-#   print('dupa')
-#   for s, r in ans:
-#       if s[TCP].dport == r[TCP].sport:
-#           print("%d is unfiltered" % s[TCP].dport)
-#   for s in unans:
-#       print("%d is filtered" % s[TCP].dport)
-
-#   #ans1, unans1 = sr(IP(dst=targetip) / TCP(dport=80, flags="FPU"))
-
+        if response is None:
+            logging.info(f"Port {port} on {target_ip} is open or filtered.")
+        elif response.haslayer(TCP):
+            if response.getlayer(TCP).flags == 0x14:
+                logging.info(f"Port {port} on {target_ip} is closed.")
+            elif response.getlayer(TCP).flags == 0x04:
+                logging.info(f"Port {port} on {target_ip} is open.")
+        else:
+            logging.info(f"Port {port} on {target_ip} could not be reached.")
 
 
 
@@ -96,40 +93,8 @@ def xmasscan(targetip,ports):
 
 
 
-#   sourceport = RandShort()
 
 
-#   openports=[]
-#   ports=[20,21,22,23,15,80,443,445,25,123,1434,161,162,110,3389]
 
-
-#   print("syn scan on, %s with ports %s" % (targetip, ports))
-#   for port in ports:
-#       pkt = sr1(IP(dst=targetip) / TCP(sport=sourceport, dport=port, flags="S"), timeout=1, verbose=0)
-#       print('dupa')
-#       if pkt is not None:
-#           if pkt.haslayer(TCP):
-#               if pkt[TCP].flags == 20:
-#                   #print_ports(port, "Closed")
-#                   print(str(port) + ' closed')
-#               elif pkt[TCP].flags == 18:
-#                   openports.append(port)
-#                   print(str(port) + ' open')
-#               else:
-#                   #print_ports(port, "TCP packet resp / filtered")
-#                   print(str(port) + ' filtered')
-#           elif pkt.haslayer(ICMP):
-#               #print_ports(port, "ICMP resp / filtered")
-#               print(str(port) + ' filtered')
-#           else:
-#               #print_ports(port, "Unknown resp")
-#               print(pkt.summary())
-#       else:
-#          # print_ports(port, "Unanswered")
-#          print(str(port) + ' unanswered')
-
-#   print(openports)
-
-#   return openports
 
 
