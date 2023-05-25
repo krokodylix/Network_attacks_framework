@@ -5,7 +5,7 @@ import warnings
 
 # Configure the logging module
 
-logging.basicConfig(level=logging.INFO, format='[chuj] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[+] %(message)s')
 logging.getLogger("paramiko").setLevel(logging.CRITICAL)
 warnings.simplefilter("ignore")
 

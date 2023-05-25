@@ -9,6 +9,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    from src.auxiliary.traceroute import traceroute
+    traceroute('8.8.8.8')
 
 
