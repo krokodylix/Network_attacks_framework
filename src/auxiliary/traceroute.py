@@ -1,5 +1,7 @@
 from scapy.all import *
-import logging
+import os
+
 
 def traceroute(targetip):
-    [print(snd.ttl, rcv.src) for snd,rcv in sr(IP(dst=targetip, ttl=(1,20),id=RandShort()) / TCP(flags=0x2), timeout=4 )[0]]
+    os.system(f'tracert {targetip}')
+    #[print(snd.ttl, rcv.src) for snd,rcv in sr(IP(dst=targetip, ttl=(1, 50),id=RandShort()) / TCP(flags=0x2), timeout=3 )[0]]
