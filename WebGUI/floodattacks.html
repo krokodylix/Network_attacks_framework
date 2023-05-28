@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div id="buttons">
+            <H3>BOT 23L Scapy</H3>
+            <a href="/index.html"><button>Home</button></a>
+            <a href="/host-disc.html"><button>Host Discovery</button></a>
+            <a href="/port-scan.html"><button>Port Scan</button></a>
+            <a href="/traceroute.html"><button>Traceroute</button></a>
+            <a href="/bruteforce.html"><button>Brute Force</button></a>
+            <a href="/packetsniffer.html"><button>Packet Sniffer</button></a>
+            <a href="/floodattacks.html"><button>Flood attacks</button></a>
+            <a href="/arpspoofing.html"><button>ARP spoofing</button></a>
+            <a href="/dhcpstarvation.html"><button>DHCP starvation</button></a>
+            <a href="/pingofdeath.html"><button>Ping of death</button></a>
+        </div><br><br>
+        <div id="options">
+                <h3>Flood attacks</h3><br>
+                <strong>ip/port/amount of requests/size of request</strong><br><br>
+                <input type="text" id="ip">
+                <input type="number" id="port">
+                <input type="number" id="amount">
+                <input type="number" id="size">
+                <select id="type">
+                    <option value="U">UDP flood</option>
+                    <option value="S">SYN flood</option>>
+                    <option value="I">ICMP flood</option>>
+                    <option value="H">HTTP flood</option>>
+                </select>
+                <br>
+                <br>
+                <button onclick="flood()">submit</button>
+        </div>
+        <br><br>
+        <div id="output">
+            <h3 id="oh">output</h3><br><br>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div id="buttons">
+            <H3>BOT 23L Scapy</H3>
+            <a href="/index.html"><button>Home</button></a>
+            <a href="/host-disc.html"><button>Host Discovery</button></a>
+            <a href="/port-scan.html"><button>Port Scan</button></a>
+            <a href="/traceroute.html"><button>Traceroute</button></a>
+            <a href="/bruteforce.html"><button>Brute Force</button></a>
+            <a href="/packetsniffer.html"><button>Packet Sniffer</button></a>
+            <a href="/floodattacks.html"><button>Flood attacks</button></a>
+            <a href="/arpspoofing.html"><button>ARP spoofing</button></a>
+            <a href="/dhcpstarvation.html"><button>DHCP starvation</button></a>
+            <a href="/pingofdeath.html"><button>Ping of death</button></a>
+        </div><br><br>
+        <div id="options">
+                <h3>Scan Ports</h3><br>
+                <strong>ip/</strong><strong>Ports</strong><br><br>
+                <input type="text" id="ip">
+                <input type="number" id="startport">
+                <input type="number" id="endport">
+                <select id="scantype">
+                    <option value="T">TCP SCAN</option>
+                    <option value="S">SYN SCAN</option>
+                    <option value="F">FIN SCAN</option>
+                    <option value="N">NULL SCAN</option>
+                </select>
+                <br>
+                <br>
+                <button onclick="port_scan()">submit</button>
+        </div>
+        <br><br>
+        <div id="output">
+            <h3 id="oh">output</h3><br><br>
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>port</th>
+                        <th>service</th>
+                        <th>state</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

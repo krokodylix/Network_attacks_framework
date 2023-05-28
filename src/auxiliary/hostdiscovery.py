@@ -1,7 +1,9 @@
 from scapy.all import ARP, Ether, srp
-
+from src.config import validateaddress, validatemask
 
 def discoverhosts(ip, mask):
+    validateaddress(ip)
+    validatemask(mask)
     arp = ARP(pdst=f'{ip}/{mask}')
     ether = Ether(dst="ff:ff:ff:ff:ff:ff")
     packet = ether / arp

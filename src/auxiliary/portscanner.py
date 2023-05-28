@@ -1,28 +1,19 @@
 from scapy.all import *
 import socket
-import logging
+
 
 
 from scapy.layers.inet import TCP
 from scapy.all import IP, TCP, sr1
 
 
-def tcpscan(targetip,ports):
+def tcpscan(target_ip, ports):
     openports = []
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(1)
-        for port in ports:
-            result = sock.connect_ex((targetip, port))
-            if result == 0:
-                logging.info(f"Port {port} is open on {targetip}")
-                openports.append(port)
-            else:
-                logging.info(f"Port {port} is closed on {targetip}")
-        sock.close()
-    except Exception as e:
-        logging.info(f"Error: {e}")
-
+    for port in ports:
+        packet = IP(dst=target_ip) / TCP(dport=port, flags="S")
+        response = sr1(packet, timeout=1, verbose=0)
+        if response is not None and response.haslayer(TCP) and response[TCP].flags == "SA":
+             openports.append(port)
     return openports
 
 

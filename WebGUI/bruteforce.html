@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div id="buttons">
+            <H3>BOT 23L Scapy</H3>
+            <a href="/index.html"><button>Home</button></a>
+            <a href="/host-disc.html"><button>Host Discovery</button></a>
+            <a href="/port-scan.html"><button>Port Scan</button></a>
+            <a href="/traceroute.html"><button>Traceroute</button></a>
+            <a href="/bruteforce.html"><button>Brute Force</button></a>
+            <a href="/packetsniffer.html"><button>Packet Sniffer</button></a>
+            <a href="/floodattacks.html"><button>Flood attacks</button></a>
+            <a href="/arpspoofing.html"><button>ARP spoofing</button></a>
+            <a href="/dhcpstarvation.html"><button>DHCP starvation</button></a>
+            <a href="/pingofdeath.html"><button>Ping of death</button></a>
+        </div><br><br>
+        <div id="options">
+                <h3>Brute force</h3><br>
+                <strong>ip/username/wordlist/protocol</strong><br><br>
+                <input type="text" id="ip">
+                <input type="text" id="username">
+                <input type="file" id="fileInput">
+            <script>
+data=[]
+const fileSelector = document.getElementById('fileInput');
+fileSelector.addEventListener('change', (event) => {
+  const fileList = event.target.files;
+  const file = fileList[0]; // Assuming you only select one file
+
+  const reader = new FileReader();
+
+  reader.onload = (event) => {
+    const contents = event.target.result;
+    const lines = contents.split('\n'); // Split the contents by new line character
+    data=[]
+    for (const line of lines) {
+      data.push(line.split('\r')[0]);
+    }
+  };
+
+  reader.readAsText(file);
+});
+</script>
+
+                <select id="service">
+                    <option value="ssh">SSH</option>
+                    <option value="ftp">FTP</option>
+                </select>
+                <br>
+                <br>
+                <button onclick="brut()">submit</button>
+        </div>
+        <br><br>
+        <div id="output">
+            <h3 id="oh">output</h3><br><br>
+            <div id="password_place"></div>
+        </div>
+    </body>
+</html>

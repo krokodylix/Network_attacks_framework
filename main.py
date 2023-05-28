@@ -1,11 +1,12 @@
-import os
-from cli import arg_dict
-from src.apprunner import run
-
+from src.httpserver.server import app
+from scapy.all import *
+from src.config import packets_to_dict
+from src.auxiliary.packetsniffer import packetsniffer
+from src.attacks.dos_attacks import httpflood
 
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    run(arg_dict)
+    app.run()
 
 
 if __name__ == '__main__':
