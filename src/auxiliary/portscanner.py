@@ -18,19 +18,6 @@ def tcpscan(target_ip, ports):
 
 
 
-def synscan(target_ip, ports):
-    openports = []
-    for port in ports:
-        ip_packet = IP(dst=target_ip)
-        tcp_packet = TCP(sport=1234, dport=port, flags="S")
-        packet = ip_packet / tcp_packet
-        response = sr1(packet, timeout=1, verbose=0)
-        if response and response.haslayer(TCP):
-            if response[TCP].flags == "SA":
-                openports.append(port)
-
-    return openports
-
 def nullscan(target_ip, ports):
     openports = []
     for port in ports:

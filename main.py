@@ -3,6 +3,8 @@ from scapy.all import *
 from src.config import packets_to_dict
 from src.auxiliary.packetsniffer import packetsniffer
 from src.attacks.dos_attacks import httpflood
+from src.apprunner import rungui
+
 
 def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -10,7 +12,10 @@ def main():
 
 
 if __name__ == '__main__':
+    rungui()
     main()
+
+
 
 
 

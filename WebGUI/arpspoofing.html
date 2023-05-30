@@ -20,18 +20,15 @@
         </div><br><br>
         <div id="options">
                 <h3>Flood attacks</h3><br>
-                <strong>ip/port/amount of requests/size of request</strong><br><br>
+                <strong>victim's ip/gateway ip/victim's mac/duration [s]</strong><br><br>
                 <input type="text" id="ip">
-                <input type="number" id="port">
-                <input type="number" id="amount">
-                <input type="number" id="size">
-                <select id="type">
-                    <option value="U">UDP flood</option>
-                    <option value="S">SYN flood</option>>
-                </select>
+                <input type="text" id="gateway">
+                <input type="text" id="mac">
+                <input type="number" id="time">
+
                 <br>
                 <br>
-                <button onclick="port_scan()">submit</button>
+                <button onclick="arps()">submit</button>
         </div>
         <br><br>
         <div id="output">

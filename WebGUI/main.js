@@ -29,8 +29,9 @@ function host_disc(){
                       cell2.textContent = item.mac;
                       row.appendChild(cell2);
                       tableBody.appendChild(row);
-                      updatestate("output")
+
                   });
+                  updatestate("output")
               })
               .catch(error =>updatestate("bad request"));
 }
@@ -64,8 +65,9 @@ function port_scan(){
                       row.appendChild(cell3);
                       tableBody.appendChild(row);
 
-                      updatestate("output")
+
                   });
+                  updatestate("output")
               })
               .catch(error => updatestate("bad request"));
 }
@@ -94,8 +96,9 @@ function trac(){
 
                       tableBody.appendChild(row);
 
-                      updatestate("output")
+
                   });
+                  updatestate("output")
               })
               .catch(error => updatestate("bad request"));
 }
@@ -178,8 +181,9 @@ function psni(){
 
                       tableBody.appendChild(row);
 
-                      updatestate("output")
+
                   });
+                  updatestate("output")
               })
               .catch(error => updatestate("bad request"));
 }
@@ -194,6 +198,24 @@ function pingofdeath(){
                   const tableBody = document.querySelector('#data-table tbody');
                   data.forEach(item => {
                        updatestate("attacked: "+ item.attacked);
+                  });
+              })
+              .catch(error => updatestate("bad request"));
+}
+
+function arps(){
+    var ip = document.getElementById("ip").value
+    var gateway = document.getElementById("gateway").value
+    var mac = document.getElementById("mac").value
+    var time = document.getElementById("time").value
+
+    updatestate("working...")
+    fetch("http://127.0.0.1:5000/arpspoof/" +ip +"/"+gateway+"/"+mac+"/"+time)
+              .then(response => response.json())
+              .then(data => {
+                  const tableBody = document.querySelector('#data-table tbody');
+                  data.forEach(item => {
+                       updatestate("attacked for: "+ item.attacked );
                   });
               })
               .catch(error => updatestate("bad request"));

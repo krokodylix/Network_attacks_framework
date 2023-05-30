@@ -1,13 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from src.auxiliary.hostdiscovery import discoverhosts
-from src.auxiliary.portscanner import tcpscan, synscan, finscan, nullscan
+from src.auxiliary.portscanner import tcpscan, finscan, nullscan
 from src.config import services, validateport, validateaddress, packets_to_dict
 from src.auxiliary.traceroute import traceroute
 from src.auxiliary.packetsniffer import packetsniffer
 from src.attacks.bruteforce import ftpbruteforce, bruteforce_ssh
 from src.attacks.dos_attacks import udpflood, synflood, icmpflood, pingofdeath, httpflood
 from src.attacks.dhcpstarvation import dhcpstarv
+from src.attacks.arpspoofing import run_arps
 
 app = Flask(__name__)
 CORS(app,resources={r"/*": {"origins": "*"}})
@@ -53,7 +54,6 @@ def flood(ip, p, type, a, s):
         elif type == 'I':
             icmpflood(ip, port, amount, size)
         elif type == 'H':
-            print('hello')
             httpflood(ip, port, amount, size)
         return jsonify([{"attacked": ip}]), 200
     except:
@@ -67,6 +67,17 @@ def packetsn(interface, duration):
         return jsonify(t2r), 200
     except:
         return "Bad request", 400
+
+@app.route('/arpspoof/<ip>/<gateway>/<mac>/<duration>', methods=['GET'])
+def arpspoof(ip, gateway, mac, duration):
+    try:
+        validateaddress(ip)
+        validateaddress(gateway)
+        run_arps(ip, gateway, mac, int(duration))
+        return jsonify([{"attacked": f"{duration} seconds"}]), 200
+    except:
+        return "Bad request", 400
+
 
 @app.route('/bruteforce/<ip>/<service>/<username>/', methods=['POST'])
 @cross_origin()
@@ -89,6 +100,7 @@ def bruteforce(ip, service, username):
 @app.route('/traceroute/<ip>', methods=['GET'])
 def tracert(ip):
     try:
+        validateaddress(ip)
         hosts = traceroute(ip)
         return jsonify(hosts), 200
     except:
@@ -108,8 +120,6 @@ def portscan(ip, startport, endport, scantype):
     open_ports = []
     if scantype == 'T':
         open_ports = tcpscan(ip, ports)
-    elif scantype == 'S':
-        open_ports = synscan(ip, ports)
     elif scantype == 'F':
         open_ports = finscan(ip, ports)
     elif scantype == 'N':

